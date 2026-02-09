@@ -20,7 +20,7 @@ public class StudentController {
     private final StudentDtoMapper studentDtoMapper;
 
     @GetMapping("/api/student")
-    public ResponseEntity<?> getAllStudents(String jwt){
+    public ResponseEntity<?> getAllStudents(){
         List<Student> students = studentService.getStudentsList();
         return ResponseEntity.ok(students.stream()
                 .map(studentDtoMapper::toDto)
