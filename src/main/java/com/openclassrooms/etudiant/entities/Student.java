@@ -2,6 +2,7 @@ package com.openclassrooms.etudiant.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,20 +36,20 @@ public class Student {
     @Column(name = "lastName", nullable = false)
     private String lastName;
 
-    @NotBlank
+    @NotNull
     @Column(name = "birthDate", nullable = false)
     private LocalDate birthDate;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "phoneNum", nullable = false)
+    @Column(name = "phoneNum")
     private String phoneNumber;
 
-    @Column(name = "subStart", nullable = false)
+    @Column(name = "subStart")
     private LocalDate subscribeStart;
 
-    @Column(name = "subEnd", nullable = false)
+    @Column(name = "subEnd")
     private LocalDate subscribeEnd;
 
     @CreationTimestamp
