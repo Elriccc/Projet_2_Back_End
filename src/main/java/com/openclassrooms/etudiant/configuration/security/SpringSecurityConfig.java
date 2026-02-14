@@ -56,6 +56,7 @@ public class SpringSecurityConfig {
                         // No auth needed on :
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/api/register", "/api/login").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         // Others protected routes will be added here.
                         .anyRequest().authenticated()
                 )
