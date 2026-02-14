@@ -8,13 +8,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -23,7 +19,6 @@ import java.util.stream.Collectors;
 public class StudentService {
     private final StudentValidator studentValidator;
     private final StudentRepository studentRepository;
-
 
     public List<Student> getStudentsList(){
         return studentRepository.findAll();
@@ -45,6 +40,7 @@ public class StudentService {
     }
 
     public void updateStudent(Student studentDb, Student student){
+        Assert.notNull(studentDb, "Database student must not be null");
         Assert.notNull(student, "Student must not be null");
         log.info("Updating student {}", studentDb.getStudentNumber());
 
@@ -60,18 +56,13 @@ public class StudentService {
 
     public void deleteStudent(String studentNum){
         Student student = this.getStudentByStudentNum(studentNum);
-        Assert.notNull(student, "Student must not be null");
         log.info("Deleting student {}", student.getStudentNumber());
 
         studentRepository.delete(student);
     }
 
     public void saveStudent(Student student){
-        Errors errors = new BeanPropertyBindingResult(student, "user");
-        studentValidator.validate(student, errors);
-        if (errors.hasErrors()) {
-            throw new IllegalArgumentException(errors.getAllErrors().stream().map(ObjectError::getDefaultMessage).collect(Collectors.joining(". ")));
-        }
+        studentValidator.validate(student);
         studentRepository.save(student);
     }
 }

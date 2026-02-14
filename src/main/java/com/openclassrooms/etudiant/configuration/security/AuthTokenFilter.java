@@ -1,6 +1,5 @@
 package com.openclassrooms.etudiant.configuration.security;
 
-import com.openclassrooms.etudiant.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +17,7 @@ import java.io.IOException;
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
-    private JwtService jwtService;
+    private JwtUtils jwtUtils;
     @Autowired
     private CustomUserDetailService userDetailsService;
     @Override
@@ -29,8 +28,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         try {
             String jwt = parseJwt(request);
-            if (jwt != null && jwtService.validateJwt(jwt)) {
-                String username = jwtService.getUsernameFromToken(jwt);
+            if (jwt != null && jwtUtils.validateJwt(jwt)) {
+                String username = jwtUtils.getUsernameFromToken(jwt);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
