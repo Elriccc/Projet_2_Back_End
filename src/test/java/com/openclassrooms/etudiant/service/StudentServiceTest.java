@@ -2,6 +2,7 @@ package com.openclassrooms.etudiant.service;
 
 import com.openclassrooms.etudiant.entities.Student;
 import com.openclassrooms.etudiant.repository.StudentRepository;
+import com.openclassrooms.etudiant.validator.StudentValidator;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +28,8 @@ public class StudentServiceTest {
 
     @Mock
     private StudentRepository studentRepository;
+    @Mock
+    private StudentValidator studentValidator;
     @InjectMocks
     private StudentService service;
 
@@ -99,6 +102,7 @@ public class StudentServiceTest {
             Student student = new Student();
             student.setStudentNumber(STUDENT_NUM);
             when(studentRepository.findByStudentNumber(any(String.class))).thenReturn(Optional.empty());
+            doNothing().when(studentValidator).validate(any(Student.class));
 
             //WHEN
             service.createStudent(student);
@@ -139,6 +143,7 @@ public class StudentServiceTest {
             Student studentDb = new Student();
             studentDb.setStudentNumber(STUDENT_NUM);
             Student student = new Student();
+            doNothing().when(studentValidator).validate(any(Student.class));
 
             //WHEN
             service.updateStudent(studentDb, student);
@@ -161,6 +166,7 @@ public class StudentServiceTest {
             student.setPhoneNumber(PHONE_NUMBER);
             student.setSubscribeStart(SUBSCRIBE_START);
             student.setSubscribeEnd(SUBSCRIBE_END);
+            doNothing().when(studentValidator).validate(any(Student.class));
 
             //WHEN
             service.updateStudent(studentDb, student);
@@ -190,6 +196,7 @@ public class StudentServiceTest {
             Student student = new Student();
             student.setStudentNumber(STUDENT_NUM);
             when(studentRepository.findByStudentNumber(any(String.class))).thenReturn(Optional.of(student));
+            doNothing().when(studentValidator).validate(any(Student.class));
 
             //WHEN
             service.deleteStudent(STUDENT_NUM);
@@ -205,6 +212,7 @@ public class StudentServiceTest {
         //GIVEN
         Student student = new Student();
         student.setStudentNumber(STUDENT_NUM);
+        doNothing().when(studentValidator).validate(any(Student.class));
 
         //WHEN
         service.saveStudent(student);
